@@ -1,0 +1,87 @@
+.board-container td {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    transition: 0.5s;
+    border: 1px;
+    border-radius: 50%;
+    border-color: honeydew;
+    border-style: solid;
+}
+
+.board-container td:hover {
+    background-color: rgb(216, 209, 207);
+}
+
+.game {
+    text-align: center;
+    background-color: rgb(140, 198, 248);
+    border: lightblue;
+    border-radius: 10%;
+    width: 400px;
+    height: max-content;
+    padding: 20px;
+    margin: auto;
+    max-width: 1000px;
+    float: none;
+    padding: 5px;
+}
+
+.game table {
+    margin: 0 auto;
+    padding: 10px;
+}
+
+h1 {
+    margin: top 10px;
+    text-shadow: 2px 2px#33c77157;
+    color: linen;
+}
+
+.stats th {
+    border: 1px;
+    border-color: rgb(176, 245, 250);
+    border-style: solid;
+    border-radius: 10%;
+    padding: 20px;    
+}
+
+.tgame {
+    border: 1px;
+    border-color: rgb(14, 13, 13);
+    border-style: solid;
+    padding: 20px;
+    border-radius: 10%;
+}
+
+.buttons {
+    padding-top: 10px;
+}
+
+.gbutton {
+    padding: 1px 5px;
+    margin: 4px 2px;
+    border-radius: 10%;
+    border: 1px;
+    border-color: rgb(148, 181, 241);
+    border-style: solid;
+    box-shadow: 1px 3px #b6e2e7;
+    background-color: linen;
+    font-size: 20px;
+}
+
+.gbutton:hover {
+    background-color: rgb(206, 242, 243);
+}
+
+.emoji{
+    font-size: 40px;
+    border-radius: 10%;
+    border-style: none;
+    margin: 4px 2px;
+    background-color: rgb(140, 198, 248);
+}
+
+.emoji:hover {
+    background-color: rgba(218, 243, 206, 0.678);
+}
