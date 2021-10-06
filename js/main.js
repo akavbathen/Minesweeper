@@ -1,6 +1,11 @@
 const EMPTY = '';
-const MINE = '*';
-const FLAG = 'p'
+const MINE = '💣';
+const FLAG = '⛳';
+const SMILE = '😀';
+const SAD= '🤨';
+const NORMAL = '🤓';
+const HIDDEN = '❔';
+var STREESED= '😲';
 
 var gFirstClick;
 var gBoard;
@@ -20,9 +25,15 @@ function initGame(row, col) {
     gSeconds = 1;
     gFirstClick = true;
     gLives = 3;
+    if (gTimerID) {
+        clearInterval(gTimerID);
+        gTimerID = undefined;
+        var a= document.querySelector('.seconds');
+        a.innerHTML='Timer:0';
+    }
 
     gBoard = createMat(row, col);
-    renderBoard();
+    firstRenderBoard();
 }
 
 function createMat(ROWS, COLS) {
@@ -92,12 +103,11 @@ function showNeighbours(k, l) {
         try {
             var elCell = document.querySelector(`.cell-${ns[i][0]}-${ns[i][1]}`);
             elCell.innerHTML = `${gBoard[ns[i][0]][ns[i][1]].minesAroundCount}`;
-        }
-        catch (e) {
+        } catch (e) {
             continue;
         }
 
-        if (gBoard[ns[i][0]][ns[i][1]].isShown === true){
+        if (gBoard[ns[i][0]][ns[i][1]].isShown === true) {
             continue;
         }
 
@@ -110,7 +120,13 @@ function showNeighbours(k, l) {
     }
 }
 
-function renderBoard() {
+function firstRenderBoard() {
+    var elButton = document.querySelector('.emoji');
+    elButton.innerHTML = NORMAL;
+    var elSeconds = document.querySelector('.lives');
+
+    elSeconds.innerHTML = `Lives:${gLives}`;
+
     var strHtml = '';
 
     for (var i = 1; i < gBoard.length - 1; i++) {
@@ -123,9 +139,8 @@ function renderBoard() {
                 } else {
                     strHtml += `<td onMouseDown="cellClicked(this,${i},${j})" class=cell-${i}-${j}>${cell.minesAroundCount}</td>`;
                 }
-            }
-            else {
-                strHtml += `<td onMouseDown="cellClicked(this,${i},${j})" class=cell-${i}-${j}>X</td>`;
+            } else {
+                strHtml += `<td onMouseDown="cellClicked(this,${i},${j})" class=cell-${i}-${j}>${HIDDEN}</td>`;
             }
 
 
@@ -186,9 +201,8 @@ function cellClicked(elCell, i, j) {
             if (gBoard[i][j].type === MINE) {
                 gameOver(i, j);
                 return;
-            }
-            else if (gBoard[i][j].type === EMPTY && gBoard[i][j].minesAroundCount !== 0) {
-                if (gBoard[i][j].isShown === false) {   
+            } else if (gBoard[i][j].type === EMPTY && gBoard[i][j].minesAroundCount !== 0) {
+                if (gBoard[i][j].isShown === false) {
                     gBoard[i][j].isShown = true;
                     gWinNums--;
                     if (gWinNums === 0 && gWinMines === 0) {
@@ -197,8 +211,7 @@ function cellClicked(elCell, i, j) {
                     }
                     elCell.innerHTML = `${gBoard[i][j].minesAroundCount}`
                 }
-            }
-            else if (gBoard[i][j].type === EMPTY && gBoard[i][j].minesAroundCount === 0) {
+            } else if (gBoard[i][j].type === EMPTY && gBoard[i][j].minesAroundCount === 0) {
                 if (gBoard[i][j].isShown === false) {
                     gBoard[i][j].isShown = true;
                     gWinNums--;
@@ -212,8 +225,7 @@ function cellClicked(elCell, i, j) {
                 }
             }
         }
-    }
-    else if (e.which === 3) {
+    } else if (e.which === 3) {
         if (gBoard[i][j].isShown === false) {
             if (gBoard[i][j].isMarked === false) {
                 gBoard[i][j].isMarked = true;
@@ -226,10 +238,9 @@ function cellClicked(elCell, i, j) {
                         return;
                     }
                 }
-            }
-            else if (gBoard[i][j].isMarked === true) {
+            } else if (gBoard[i][j].isMarked === true) {
                 gBoard[i][j].isMarked = false;
-                elCell.innerHTML = 'X'
+                elCell.innerHTML = HIDDEN
 
                 if (gBoard[i][j].isMine === true) {
                     gWinMines++;
@@ -250,7 +261,7 @@ function myTimer() {
     }
 
     var elSeconds = document.querySelector('.seconds');
-    elSeconds.innerHTML = '0';
+    elSeconds.innerHTML = 'Timer:0';
 
     if (gTimerID) {
         clearInterval(gTimerID);
@@ -264,16 +275,25 @@ function myTimer() {
 
 function onTime() {
     var elSeconds = document.querySelector('.seconds');
-    elSeconds.innerHTML = `${gSeconds}`;
+    elSeconds.innerHTML = `Timer:${gSeconds}`;
     gSeconds++;
 }
+
 function gameOver(k, l) {
+    gBoard[k][l].isShown = true;
+
     var elCell = document.querySelector(`.cell-${k}-${l}`);
-    elCell.style.color = 'orange';
+    elCell.style.borderColor = 'orange';
+    elCell.innerHTML = MINE;
 
     var elSeconds = document.querySelector('.lives');
     gLives--;
-    elSeconds.innerHTML = `${gLives}`;
+    elSeconds.innerHTML = `Lives:${gLives}`;
+    if (gLives===1) {
+        var elButton = document.querySelector('.emoji');
+    elButton.innerHTML = STREESED;
+    ;
+    }
 
     if (gLives > 0) {
         gWinMines--;
@@ -292,9 +312,11 @@ function gameOver(k, l) {
     }
 
     var elCell = document.querySelector(`.cell-${k}-${l}`);
-    elCell.style.color = 'red';
+    elCell.style.borderColor = 'red';
 
     console.log('Game Over');
+    var elButton = document.querySelector('.emoji');
+    elButton.innerHTML = SAD;
 
     gInGame = false;
     clearInterval(gTimerID);
@@ -306,4 +328,7 @@ function gameOverWin() {
     gInGame = false;
     clearInterval(gTimerID);
     gTimerID = undefined;
+    var elButton = document.querySelector('.emoji');
+    elButton.innerHTML = SMILE;
+
 }
