@@ -10,11 +10,19 @@
 
 </head>
 
-<body onload="init()">
+<body onload="initGame(4, 4)" oncontextmenu="return false;">
+    <div class="dashboard">
+        <div class="seconds">0</div>
+        <div class="lives">3</div>
+    </div>
 
     <table>
         <tbody class="board-container"></tbody>
+
     </table>
+    <button onclick="initGame(12, 12)">Start Game 12*12</button>
+    <button onclick="initGame(8, 8)">Start Game 8*8</button>
+    <button onclick="initGame(4,4)">Start Game 4*4</button>
 
     <script src="js/main.js"></script>
 </body>
